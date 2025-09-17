@@ -1,0 +1,122 @@
+[
+  {
+    "intern_id": "INT001",
+    "title": "Digital Marketing Intern",
+    "organization": "Rural Connect NGO",
+    "sector": "Marketing",
+    "required_education": "12th",
+    "required_skills": ["Social Media", "Communication", "Hindi"],
+    "preferred_skills": ["Canva", "WhatsApp Business"],
+    "location": {
+      "district": "Sitapur",
+      "state": "Uttar Pradesh",
+      "lat": 27.5667,
+      "lon": 80.6833
+    },
+    "stipend": 8000,
+    "duration_weeks": 12,
+    "deadline": "2025-12-15T23:59:59Z",
+    "remote_flag": true,
+    "posted_date": "2024-09-01T00:00:00Z",
+    "tags": ["Remote", "Part-time", "Beginner"],
+    "language": "Hindi",
+    "application_link": "#",
+    "contact_phone": "+91-9876543210"
+  },
+  {
+    "intern_id": "INT002",
+    "title": "Data Entry Assistant",
+    "organization": "Gram Panchayat Office",
+    "sector": "Administration",
+    "required_education": "10th",
+    "required_skills": ["Computer Basics", "Excel", "Hindi Typing"],
+    "preferred_skills": ["MS Office"],
+    "location": {
+      "district": "Barabanki",
+      "state": "Uttar Pradesh", 
+      "lat": 26.9247,
+      "lon": 81.1947
+    },
+    "stipend": 6000,
+    "duration_weeks": 8,
+    "deadline": "2025-11-30T23:59:59Z",
+    "remote_flag": false,
+    "posted_date": "2024-09-05T00:00:00Z",
+    "tags": ["On-site", "Government", "Entry-level"],
+    "language": "Hindi",
+    "application_link": "#",
+    "contact_phone": "+91-9876543211"
+  },
+  {
+    "intern_id": "INT003",
+    "title": "Teaching Assistant",
+    "organization": "Vidya Niketan School",
+    "sector": "Education",
+    "required_education": "Graduation",
+    "required_skills": ["Teaching", "Communication", "Subject Knowledge"],
+    "preferred_skills": ["Computer Skills", "English"],
+    "location": {
+      "district": "Hardoi",
+      "state": "Uttar Pradesh",
+      "lat": 27.4167,
+      "lon": 80.1333
+    },
+    "stipend": 10000,
+    "duration_weeks": 16,
+    "deadline": "2025-12-20T23:59:59Z",
+    "remote_flag": false,
+    "posted_date": "2024-09-10T00:00:00Z",
+    "tags": ["Education", "Full-time", "Impact"],
+    "language": "Hindi",
+    "application_link": "#",
+    "contact_phone": "+91-9876543212"
+  },
+  {
+    "intern_id": "INT004",
+    "title": "Customer Service Representative",
+    "organization": "Local Bank",
+    "sector": "Banking",
+    "required_education": "12th",
+    "required_skills": ["Communication", "Hindi", "Customer Service"],
+    "preferred_skills": ["Computer Basics"],
+    "location": {
+      "district": "Sitapur",
+      "state": "Uttar Pradesh",
+      "lat": 27.5667,
+      "lon": 80.6833
+    },
+    "stipend": 7000,
+    "duration_weeks": 10,
+    "deadline": "2025-10-30T23:59:59Z",
+    "remote_flag": false,
+    "posted_date": "2024-09-15T00:00:00Z",
+    "tags": ["Banking", "Customer Service", "Entry-level"],
+    "language": "Hindi",
+    "application_link": "#",
+    "contact_phone": "+91-9876543213"
+  },
+  {
+    "intern_id": "INT005",
+    "title": "Computer Operator",
+    "organization": "District Collectorate",
+    "sector": "Government",
+    "required_education": "10th",
+    "required_skills": ["Computer Basics", "Hindi Typing"],
+    "preferred_skills": ["MS Office", "Data Entry"],
+    "location": {
+      "district": "Hardoi",
+      "state": "Uttar Pradesh",
+      "lat": 27.4167,
+      "lon": 80.1333
+    },
+    "stipend": 5500,
+    "duration_weeks": 6,
+    "deadline": "2025-09-25T23:59:59Z",
+    "remote_flag": false,
+    "posted_date": "2024-09-20T00:00:00Z",
+    "tags": ["Government", "Data Entry", "Part-time"],
+    "language": "Hindi",
+    "application_link": "#",
+    "contact_phone": "+91-9876543214"
+  }
+]

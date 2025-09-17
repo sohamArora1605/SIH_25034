@@ -1,0 +1,32 @@
+[
+  {
+    "candidate_id": "CAND001",
+    "name": "Priya Sharma",
+    "phone": "+91-9876543201",
+    "education_level": "12th",
+    "stream": "Science",
+    "college_type": "rural",
+    "skills": ["Communication", "Hindi", "Computer Basics"],
+    "preferred_sectors": ["Education", "Healthcare"],
+    "preferred_locations": ["Sitapur", "Hardoi"],
+    "language_pref": "Hindi",
+    "gender": "female",
+    "first_gen_flag": true,
+    "internet_access_level": "low"
+  },
+  {
+    "candidate_id": "CAND002", 
+    "name": "Rahul Kumar",
+    "phone": "+91-9876543202",
+    "education_level": "Graduation",
+    "stream": "Arts",
+    "college_type": "rural",
+    "skills": ["Teaching", "Hindi", "English", "Communication"],
+    "preferred_sectors": ["Education", "Administration"],
+    "preferred_locations": ["Barabanki", "Sitapur"],
+    "language_pref": "Hindi",
+    "gender": "male",
+    "first_gen_flag": true,
+    "internet_access_level": "medium"
+  }
+]
