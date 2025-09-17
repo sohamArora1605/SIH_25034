@@ -14,7 +14,7 @@ export function RecruiterDashboard() {
         <div className="text-center">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Please login as recruiter</h2>
           <p className="text-sm text-gray-600 mb-4">Debug: No recruiter profile found</p>
-          <a href="#/auth" className="btn-primary">Login</a>
+          <a href="#/recruiter-login" className="btn-primary">Login</a>
         </div>
       </div>
     );
@@ -23,13 +23,22 @@ export function RecruiterDashboard() {
   console.log('Recruiter Dashboard - Recruiter:', recruiter);
 
   const myJobApplications = applications.filter(app => 
-    postedJobs.some(job => job.intern_id === app.internship.intern_id)
+    postedJobs.some(job => job.intern_id === app.internship_id)
   );
 
   const handleDeleteJob = (jobId) => {
     if (confirm('Are you sure you want to delete this job posting?')) {
       setPostedJobs(prev => prev.filter(job => job.intern_id !== jobId));
     }
+  };
+
+  const handleStatusChange = (applicationId, newStatus) => {
+    const [allApplications, setAllApplications] = useLocalStorage('applications', []);
+    setAllApplications(prev => 
+      prev.map(app => 
+        app.id === applicationId ? { ...app, status: newStatus } : app
+      )
+    );
   };
 
   return (
@@ -41,7 +50,7 @@ export function RecruiterDashboard() {
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Welcome, {recruiter.name}
             </h1>
-            <p className="text-gray-600">{recruiter.company} - {recruiter.role}</p>
+            <p className="text-gray-600">{recruiter.company} - {recruiter.designation}</p>
           </div>
           <button
             onClick={() => setShowJobForm(true)}
@@ -122,7 +131,7 @@ export function RecruiterDashboard() {
                         )}
                       </div>
                       <div className="text-sm text-gray-600">
-                        Applications: {myJobApplications.filter(app => app.internship.intern_id === job.intern_id).length}
+                        Applications: {myJobApplications.filter(app => app.internship_id === job.intern_id).length}
                       </div>
                     </div>
                     <div className="flex gap-2">
@@ -158,18 +167,26 @@ export function RecruiterDashboard() {
                 <div key={application.id} className="card">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="font-semibold text-gray-900">{application.candidate.name}</h3>
-                      <p className="text-sm text-gray-600 mb-2">Applied for: {application.internship.title}</p>
+                      <h3 className="font-semibold text-gray-900">{application.candidate?.name || 'Candidate'}</h3>
+                      <p className="text-sm text-gray-600 mb-2">Applied for: {application.internship_title}</p>
                       <div className="flex items-center gap-4 text-sm text-gray-500">
                         <span>Applied: {new Date(application.applied_date).toLocaleDateString()}</span>
-                        <span className={`px-2 py-1 rounded text-xs ${
-                          application.status === 'Applied' ? 'bg-blue-100 text-blue-800' :
-                          application.status === 'In Review' ? 'bg-yellow-100 text-yellow-800' :
-                          application.status === 'Shortlisted' ? 'bg-green-100 text-green-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
-                          {application.status}
-                        </span>
+                        <select
+                          value={application.status}
+                          onChange={(e) => handleStatusChange(application.id, e.target.value)}
+                          className={`px-2 py-1 rounded text-xs border-0 font-medium ${
+                            application.status === 'Applied' ? 'bg-blue-100 text-blue-800' :
+                            application.status === 'In Review' ? 'bg-yellow-100 text-yellow-800' :
+                            application.status === 'Shortlisted' ? 'bg-green-100 text-green-800' :
+                            application.status === 'Rejected' ? 'bg-red-100 text-red-800' :
+                            'bg-gray-100 text-gray-800'
+                          }`}
+                        >
+                          <option value="Applied">Applied</option>
+                          <option value="In Review">In Review</option>
+                          <option value="Shortlisted">Shortlisted</option>
+                          <option value="Rejected">Rejected</option>
+                        </select>
                       </div>
                     </div>
                     <button className="btn-secondary text-sm">
@@ -224,7 +241,8 @@ function JobPostingForm({ recruiter, onClose, onJobPosted }) {
       contact_phone: recruiter.email,
       tags: formData.required_skills.slice(0, 3),
       language: 'English',
-      application_link: '#/apply'
+      application_link: '#/apply',
+      recruiter_id: recruiter.recruiter_id
     };
 
     onJobPosted(newJob);

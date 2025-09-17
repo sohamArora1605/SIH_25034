@@ -97,24 +97,61 @@ export function Tracker() {
                     </div>
                   </div>
 
-                  {/* Status Update (for prototyping) */}
+                  {/* Dynamic Status Timeline */}
                   <div className="border-t pt-4">
-                    <p className="text-sm text-gray-600 mb-2">Update Status (Demo):</p>
-                    <div className="flex gap-2 flex-wrap">
-                      {Object.keys(STATUS_CONFIG).map(status => (
-                        <button
-                          key={status}
-                          onClick={() => updateApplicationStatus(application.id, status)}
-                          className={`px-3 py-1 text-xs rounded-full border transition-colors ${
-                            application.status === status
-                              ? 'bg-primary-600 text-white border-primary-600'
-                              : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                          }`}
-                        >
-                          {status}
-                        </button>
-                      ))}
+                    <div className="flex items-center justify-between">
+                      {['Applied', 'In Review', 'Shortlisted'].map((status, index) => {
+                        const isActive = application.status === status;
+                        const isPassed = ['Applied', 'In Review', 'Shortlisted'].indexOf(application.status) > index;
+                        const isRejected = application.status === 'Rejected';
+                        
+                        return (
+                          <div key={status} className="flex items-center">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all duration-200 ${
+                              isActive ? 'bg-primary-600 text-white ring-4 ring-primary-200' :
+                              isPassed ? 'bg-green-500 text-white' :
+                              isRejected && index === 0 ? 'bg-red-500 text-white' :
+                              'bg-neutral-200 text-neutral-500'
+                            }`}>
+                              {isPassed ? '✓' : index + 1}
+                            </div>
+                            <div className="ml-2 text-xs">
+                              <div className={`font-medium ${
+                                isActive ? 'text-primary-600' :
+                                isPassed ? 'text-green-600' :
+                                isRejected && index === 0 ? 'text-red-600' :
+                                'text-neutral-500'
+                              }`}>
+                                {status}
+                              </div>
+                            </div>
+                            {index < 2 && (
+                              <div className={`w-12 h-0.5 mx-2 ${
+                                isPassed ? 'bg-green-500' : 'bg-neutral-200'
+                              }`} />
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
+                    
+                    {application.status === 'Rejected' && (
+                      <div className="mt-3 p-2 bg-red-50 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs">✗</div>
+                          <span className="text-sm font-medium text-red-800">Application Rejected</span>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {application.status === 'Offer' && (
+                      <div className="mt-3 p-2 bg-purple-50 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs">🎉</div>
+                          <span className="text-sm font-medium text-purple-800">Offer Received!</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               );

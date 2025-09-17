@@ -12,6 +12,8 @@ export function Dashboard() {
   const [postedJobs] = useLocalStorage('postedJobs', []);
   const { applications, savedJobs, addApplication, saveJob } = useApplications();
   const [recommendations, setRecommendations] = useState([]);
+  const [showAllRecommendations, setShowAllRecommendations] = useState(false);
+  const [showSavedJobs, setShowSavedJobs] = useState(false);
 
   useEffect(() => {
     if (profile) {
@@ -71,11 +73,12 @@ export function Dashboard() {
             </div>
           ) : (
             <div className="space-y-4">
-              {recommendations.slice(0, 3).map(internship => (
+              {(showAllRecommendations ? recommendations : recommendations.slice(0, 3)).map(internship => (
                 <JobCard
                   key={internship.intern_id}
                   internship={internship}
                   candidateSkills={profile.skills}
+                  profile={profile}
                   onApply={handleApply}
                   onSave={handleSave}
                   onShare={handleShare}
@@ -87,9 +90,28 @@ export function Dashboard() {
 
         {recommendations.length > 3 && (
           <div className="text-center">
-            <button className="btn-secondary">
-              View All Recommendations ({recommendations.length})
+            <button 
+              onClick={() => setShowAllRecommendations(!showAllRecommendations)}
+              className="btn-secondary"
+            >
+              {showAllRecommendations ? 'Show Less' : `View All Recommendations (${recommendations.length})`}
             </button>
+          </div>
+        )}
+        
+        {showAllRecommendations && recommendations.length > 3 && (
+          <div className="space-y-4 mt-6">
+            {recommendations.slice(3).map(internship => (
+              <JobCard
+                key={internship.intern_id}
+                internship={internship}
+                candidateSkills={profile.skills}
+                profile={profile}
+                onApply={handleApply}
+                onSave={handleSave}
+                onShare={handleShare}
+              />
+            ))}
           </div>
         )}
 
@@ -102,13 +124,36 @@ export function Dashboard() {
             <div className="text-sm text-gray-600">Applications</div>
             <div className="text-xs text-primary-600 mt-1">View Tracker →</div>
           </a>
-          <div className="card text-center">
+          <div className="card text-center cursor-pointer hover:shadow-lg transition-shadow" onClick={() => setShowSavedJobs(!showSavedJobs)}>
             <div className="text-2xl font-bold text-primary-600 mb-1">
               {savedJobs.length}
             </div>
             <div className="text-sm text-gray-600">Saved Jobs</div>
+            <div className="text-xs text-primary-600 mt-1">Click to view →</div>
           </div>
         </div>
+        
+        {/* Saved Jobs Section */}
+        {showSavedJobs && savedJobs.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Saved Jobs ({savedJobs.length})
+            </h2>
+            <div className="space-y-4">
+              {savedJobs.map(internship => (
+                <JobCard
+                  key={internship.intern_id}
+                  internship={internship}
+                  candidateSkills={profile.skills}
+                  profile={profile}
+                  onApply={handleApply}
+                  onSave={handleSave}
+                  onShare={handleShare}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

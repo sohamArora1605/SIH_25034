@@ -14,6 +14,17 @@ export function ApplicationProvider({ children }) {
   };
 
   const addApplication = (internship, profile) => {
+    // Check if already applied
+    const existingApp = applications.find(app => 
+      app.internship_id === internship.intern_id && 
+      app.candidate_id === profile.candidate_id
+    );
+    
+    if (existingApp) {
+      showToast('You have already applied for this position.');
+      return null;
+    }
+
     const application = {
       id: `APP${Date.now()}`,
       internship_id: internship.intern_id,
@@ -21,10 +32,22 @@ export function ApplicationProvider({ children }) {
       internship_title: internship.title,
       organization: internship.organization,
       applied_date: new Date().toISOString(),
-      status: 'Applied'
+      status: 'Applied',
+      internship: internship,
+      candidate: profile
     };
     
     setApplications(prev => [...prev, application]);
+    
+    // Update job with application info in localStorage
+    const currentJobs = JSON.parse(localStorage.getItem('postedJobs') || '[]');
+    const updatedJobs = currentJobs.map(job => 
+      job.intern_id === internship.intern_id 
+        ? { ...job, applications: [...(job.applications || []), application] }
+        : job
+    );
+    localStorage.setItem('postedJobs', JSON.stringify(updatedJobs));
+    
     showToast(`Applied to ${internship.title} successfully!`);
     return application;
   };

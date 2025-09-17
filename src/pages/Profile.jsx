@@ -115,6 +115,16 @@ export function Profile() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                     />
                   </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Upload Resume</label>
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={(e) => setEditForm(prev => ({ ...prev, resume: e.target.files[0] }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    />
+                  </div>
                   <button onClick={handleSave} className="btn-primary">Save Changes</button>
                 </div>
               ) : (
@@ -177,16 +187,20 @@ export function Profile() {
                 <div className="border-t pt-4">
                   <h3 className="text-sm font-medium text-gray-700 mb-2">Suggested Skills:</h3>
                   <div className="flex flex-wrap gap-2">
-                    {suggestedSkills.map(skill => (
+                    {suggestedSkills.filter(skill => !profile.skills.includes(skill)).map(skill => (
                       <button
                         key={skill}
-                        onClick={() => isEditing && addSkill(skill)}
-                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm ${
-                          isEditing 
-                            ? 'bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer' 
-                            : 'bg-gray-100 text-gray-600 cursor-default'
-                        }`}
-                        disabled={!isEditing}
+                        onClick={() => {
+                          if (isEditing) {
+                            addSkill(skill);
+                          } else {
+                            setProfile(prev => ({
+                              ...prev,
+                              skills: [...prev.skills, skill]
+                            }));
+                          }
+                        }}
+                        className="skill-suggestion"
                       >
                         <Plus size={14} />
                         {skill}
@@ -265,9 +279,6 @@ export function Profile() {
               </div>
               <a href="#/tracker" className="btn-secondary w-full mt-4">
                 View All Applications
-              </a>
-              <a href="#/resume-builder" className="btn-primary w-full mt-2">
-                Build Resume
               </a>
             </div>
 
