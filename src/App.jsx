@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
+import { Chatbot } from './components/Chatbot';
 import { Home } from './pages/Home';
 import { JobSeekerLogin } from './pages/JobSeekerLogin';
 import { RecruiterLogin } from './pages/RecruiterLogin';
@@ -78,6 +79,7 @@ function AppContent() {
       <main>
         {renderPage()}
       </main>
+      <Chatbot />
     </div>
   );
 }

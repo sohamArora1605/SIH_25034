@@ -10,6 +10,7 @@ export function Header() {
   const [, setApplications] = useLocalStorage('applications', []);
   const [, setSavedJobs] = useLocalStorage('savedJobs', []);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [authState, setAuthState] = useState({ profile, recruiter });
 
   const userMenuRef = useRef(null);
 
@@ -36,19 +37,34 @@ export function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    setAuthState({ profile, recruiter });
+  }, [profile, recruiter]);
+
+  useEffect(() => {
+    const syncAuth = () => {
+      setAuthState({
+        profile: JSON.parse(localStorage.getItem("userProfile")),
+        recruiter: JSON.parse(localStorage.getItem("recruiterProfile"))
+      });
+    };
+
+    window.addEventListener("storage", syncAuth);
+    return () => window.removeEventListener("storage", syncAuth);
+  }, []);
+
   return (
-    <>
     <header className="bg-white/95 backdrop-blur-md shadow-lg border-b border-neutral-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <a href="#/" className="text-xl font-bold gradient-text hover:scale-105 transition-transform duration-200">
+            <a href="#/" className="text-2xl font-bold gradient-text hover:scale-105 transition-transform duration-200">
               {t('app_name')}
             </a>
           </div>
           
           <div className="flex items-center gap-4">
-            {profile && (
+            {authState.profile && (
               <nav className="hidden md:flex items-center gap-4">
                 <a href="#/dashboard" className="nav-link focus:outline-none">Dashboard</a>
                 <a href="#/tracker" className="nav-link focus:outline-none">Tracker</a>
@@ -56,10 +72,10 @@ export function Header() {
               </nav>
             )}
             
-            {recruiter && (
+            {authState.recruiter && (
               <nav className="hidden md:flex items-center gap-4">
                 <a href="#/recruiter-dashboard" className="nav-link focus:outline-none">Dashboard</a>
-                <span className="text-sm text-gray-500">{recruiter.company}</span>
+                <span className="text-sm text-gray-500">{authState.recruiter?.company}</span>
               </nav>
             )}
             
@@ -72,7 +88,7 @@ export function Header() {
               <span>{language === 'en' ? 'हिं' : 'EN'}</span>
             </button>
 
-            {!profile && !recruiter && (
+            {!authState.profile && !authState.recruiter && (
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-neutral-600 font-medium">Job Seeker:</span>
@@ -89,27 +105,27 @@ export function Header() {
               </div>
             )}
 
-            {(profile || recruiter) && (
+            {(authState.profile || authState.recruiter) && (
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-neutral-700 hover:text-primary-600 focus:text-primary-600 rounded-xl hover:bg-neutral-100 transition-all duration-200 focus:outline-none"
                 >
                   <User size={16} />
-                  <span className="hidden sm:block">{profile?.name || recruiter?.name}</span>
+                  <span className="hidden sm:block">{authState.profile?.name || authState.recruiter?.name}</span>
                   <ChevronDown size={14} />
                 </button>
 
                 {showUserMenu && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-neutral-200 py-2 z-50 backdrop-blur-md">
                     <a
-                      href={profile ? "#/profile" : "#/recruiter-dashboard"}
+                      href={authState.profile ? "#/profile" : "#/recruiter-dashboard"}
                       className="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors duration-200 rounded-lg mx-2"
                       onClick={() => setShowUserMenu(false)}
                     >
                       <div className="flex items-center gap-2">
                         <User size={16} />
-                        {profile ? "My Profile" : "Dashboard"}
+                        {authState.profile ? "My Profile" : "Dashboard"}
                       </div>
                     </a>
 
@@ -128,6 +144,5 @@ export function Header() {
         </div>
       </div>
     </header>
-    </>
   );
 }

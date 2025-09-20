@@ -248,6 +248,15 @@ export function Profile() {
                     <p className="text-xs text-gray-600 mt-2">
                       Consider learning these skills to improve your job match rate
                     </p>
+                    <a
+                      href="https://onlinecourses.nptel.ac.in/noc25_cs161/preview"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary text-sm mt-3 inline-flex items-center gap-2"
+                    >
+                      <GraduationCap size={16} />
+                      Access NPTEL Courses
+                    </a>
                   </div>
                 )}
               </div>

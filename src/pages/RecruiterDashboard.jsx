@@ -5,7 +5,7 @@ import { Plus, Users, Briefcase, Eye, Edit, Trash2, Calendar, MapPin, IndianRupe
 export function RecruiterDashboard() {
   const [recruiter] = useLocalStorage('recruiterProfile', null);
   const [postedJobs, setPostedJobs] = useLocalStorage('postedJobs', []);
-  const [applications] = useLocalStorage('applications', []);
+  const [applications, setApplications] = useLocalStorage('applications', []);
   const [showJobForm, setShowJobForm] = useState(false);
 
   if (!recruiter) {
@@ -33,8 +33,7 @@ export function RecruiterDashboard() {
   };
 
   const handleStatusChange = (applicationId, newStatus) => {
-    const [allApplications, setAllApplications] = useLocalStorage('applications', []);
-    setAllApplications(prev => 
+    setApplications(prev => 
       prev.map(app => 
         app.id === applicationId ? { ...app, status: newStatus } : app
       )
@@ -206,7 +205,12 @@ export function RecruiterDashboard() {
           recruiter={recruiter}
           onClose={() => setShowJobForm(false)}
           onJobPosted={(job) => {
-            setPostedJobs(prev => [...prev, job]);
+            console.log('Saving job to localStorage:', job);
+            setPostedJobs(prev => {
+              const updated = [...prev, job];
+              console.log('Updated postedJobs:', updated);
+              return updated;
+            });
             setShowJobForm(false);
           }}
         />
@@ -245,6 +249,7 @@ function JobPostingForm({ recruiter, onClose, onJobPosted }) {
       recruiter_id: recruiter.recruiter_id
     };
 
+    console.log('Posting new job:', newJob);
     onJobPosted(newJob);
   };
 
